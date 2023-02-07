@@ -27,8 +27,15 @@ type request_info = record {
 };
 
 type download_file_response = variant {
-  empty_file;
-  non_empty_file: blob;
+  not_found_file;
+  not_uploaded_file;
+  found_file: blob;
+};
+
+type upload_file_response = variant {
+  not_requested_file;
+  already_uploaded_file;
+  upload_ok;
 };
 
 service docutrack : {
@@ -46,7 +53,7 @@ service docutrack : {
   // it returns the name and id of the file to be uploaded.
   get_request_info: (alias: text) -> (request_info);
 
-  upload_file: (nat64, blob) -> () ;
+  upload_file: (nat64, blob) -> (upload_file_response) ;
 
   download_file: (nat64) -> (download_file_response) ;
 }
