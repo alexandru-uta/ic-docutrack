@@ -95,9 +95,8 @@ fn get_request_info(alias: String) -> FileMetadata {
 fn upload_file(file_id: u64, file_content: Vec<u8>) {
     FILE_DATA.with(|file_data| {
         let mut file_data = file_data.borrow_mut();
-        match file_data.get_mut(&file_id) {
-            Some(file) => file.contents = Some(file_content.clone()),
-            None => (),
+        if let Some(file) = file_data.get_mut(&file_id) {
+            file.contents = Some(file_content.clone())
         }
     });
 }
